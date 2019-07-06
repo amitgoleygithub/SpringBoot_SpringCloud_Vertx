@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order-service
+
+server:
+  port: 8082
+
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://172.17.0.2:8761/eureka/
+  instance: 
+    preferIpAddress: true

@@ -3,8 +3,12 @@ package com.osp.billing;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
@@ -21,6 +25,9 @@ public class VertxServerVerticle extends AbstractVerticle{
 
 	@Autowired
 	private Environment environment;
+	
+	  @Autowired
+	  private RestTemplate restTemplate;
 		
 	@Override
 	public void start() throws Exception {		
@@ -46,21 +53,37 @@ public class VertxServerVerticle extends AbstractVerticle{
 		
 		HttpServerResponse response = routingContext.response();		
 		String orderAmount = routingContext.request().getParam("amount");
-		String orderID = routingContext.request().getParam("orderid");
+		String ordername = routingContext.request().getParam("ordername");
 		String creditCardNumber = routingContext.request().getParam("creditcardnumber");
 		
 
-		System.out.println("received billing request for order number = ="+orderID);
+		System.out.println("received billing request for order ordername = ="+ordername);
 		System.out.println("processing amount = ="+orderAmount);
 		System.out.println("processing credit card number = ="+creditCardNumber);
 		
 
-		JsonObject obj = new JsonObject();
-		obj.put("OrderID", orderID);
-		obj.put("Amount", orderAmount);		
-		obj.put("ProcessingStatus", "Success");	
-		
 
+		
+		//RestTemplate restTemplate = new RestTemplate();
+		
+		// use the "smart" Eureka-aware RestTemplate
+		
+		System.out.println("calling order service");
+		
+        ResponseEntity<String> exchange =
+                  restTemplate.exchange("http://order-service/order/",HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<String>() {
+                        });
+
+        System.out.println("order service response = "+exchange.getBody());
+        
+		JsonObject obj = new JsonObject();
+		obj.put("ordername", ordername);
+		obj.put("Amount", orderAmount);		
+		//obj.put("ProcessingStatus", "Success");	
+		obj.put("ProcessingStatus", exchange.getBody());	
+		
 		routingContext.response()
 								.putHeader("content-type", "application/json")
 								.setStatusCode(200)

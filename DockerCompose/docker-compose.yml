@@ -1,0 +1,14 @@
+version: '3'
+services:
+  eurekaserver:
+    image: eureka-server
+    build: ../EurekaServer
+    container_name: eureka-server-container
+    ports:
+      - "8761:8761"
+  billingservice:
+    image: billing-service
+    build: ../BillingService
+    container_name: billing-service-container
+    ports:
+      - "8081:8081"
