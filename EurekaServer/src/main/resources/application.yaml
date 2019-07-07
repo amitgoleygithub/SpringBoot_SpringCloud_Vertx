@@ -1,6 +1,19 @@
+spring:
+  application:
+    name: eureka-server
+    
 server:
   port: 8761
 eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+  instance: 
+    ipAddress: 172.17.0.1    
+    
+ # ipAddress: 172.17.0.1   -> This is the ip address of docker container.
+ # docker container will always run on this ip address ,otherwise the container create dynamic ports . 
+ # Eureka server should run on 172.17.0.1 ip address inside the container always, so that the 
+ # this ip address can be given to Eureka clients to register .
+ # If we do not set this ip address, then docker container will create some dynamic port and eureka clients will not be able to find that port and resgister.
+ #To run in local, change to - localhost
