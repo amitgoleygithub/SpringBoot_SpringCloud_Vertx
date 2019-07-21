@@ -1,0 +1,17 @@
+<mat-grid-list cols="4" rowHeight="170px" gutterSize="50px">
+      <mat-grid-tile *ngFor="let menuItem of menuItemsArray"
+          [colspan]="1"
+          [rowspan]="1"
+          [style.border]="0">
+          <img src="{{menuItem.itemimage}}"/>
+      
+          <mat-grid-tile-header>
+            <h3>{{menuItem.itemname}}</h3>
+          </mat-grid-tile-header>
+          
+          <mat-grid-tile-footer>
+            <h3>${{menuItem.itemprice}}</h3>
+          </mat-grid-tile-footer>
+      
+      </mat-grid-tile>
+</mat-grid-list>
