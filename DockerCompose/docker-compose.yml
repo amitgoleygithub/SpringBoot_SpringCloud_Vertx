@@ -17,4 +17,10 @@ services:
     build: ../OrderService
     container_name: order-service-container
     ports:
-      - "8082:8082"    
+      - "8082:8082"   
+  angular-ui-service:
+    image: angular-ui-service-image
+    build: ../AngularUI/OSPRestaurantUI
+    container_name: angular-ui-service-container
+    ports:
+      - "4200:4200"      
